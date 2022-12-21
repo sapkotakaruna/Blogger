@@ -55,6 +55,8 @@ class CrudController extends Controller
            'description'=>  ['required','min:10'],
            'status'=>       ['nullable'],
         ]);
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['title']);
+        $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
 
         //upload file
         if($request->hasFile('main_photo')){
@@ -62,7 +64,7 @@ class CrudController extends Controller
 
             //public path to image
             $path =public_path('images/crud');
-            $file_name = $file->getclientOriginalName();
+            $file_name =$validated['slug']. '.' .$file->getclientOriginalExtension();
 
             //check and create folder image
             if (!file_exists(public_path('images/crud'))){
@@ -70,10 +72,11 @@ class CrudController extends Controller
             }
             //move uploaded file to given path with given filename
             $file->move($path, $file_name);
+            //update photo name in validated array
+            $validated['photo'] = $file_name;
         }
-        $validated['photo'] = $file_name;
-        $validated['slug'] = \Illuminate\Support\Str::slug($validated['title']);
-        $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
+
+
 
         $crud = Crud::create($validated);
         if($crud){
@@ -125,13 +128,15 @@ class CrudController extends Controller
             'status'=>       ['nullable'],
         ]);
         $crud = Crud::find($id);
+        $validated['slug'] =Str::slug($validated['title']);
+        $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
         //upload file
         if($request->hasFile('main_photo')){
             $file = $validated['main_photo'];
 
             //public path to image
             $path =public_path('images/crud');
-            $file_name = $file->getclientOriginalName();
+            $file_name =$validated['slug']. '.' .$file->getclientOriginalExtension();
 
             //check and create folder image
             if (!file_exists(public_path('images/crud'))){
@@ -147,8 +152,7 @@ class CrudController extends Controller
             $validated['photo'] = $file_name;
         }
 
-        $validated['slug'] =Str::slug($validated['title']);
-        $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
+
 
         $crud -> update($validated);
 

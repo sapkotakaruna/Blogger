@@ -22,3 +22,14 @@ Route::post('crud/store',[\App\Http\Controllers\CrudController::class,'store'])-
 Route::get('crud/edit/{id}',[\App\Http\Controllers\CrudController::class,'edit'])->name('crud.edit');
 Route::post('crud/update/{id}',[\App\Http\Controllers\CrudController::class,'update'])->name('crud.update');
 Route::get('crud/delete/{id}',[\App\Http\Controllers\CrudController::class,'destroy'])->name('crud.delete');
+
+Route::get('trial',[\App\Http\Controllers\TrialController::class,'index'])->name('trial.index');
+Route::get('trial/create',[\App\Http\Controllers\TrialController::class,'create'])->name('trial.create');
+Route::post('trial/store',[\App\Http\Controllers\TrialController::class,'store'])->name('trial.store');
+Route::get('trial/edit/{id}',[\App\Http\Controllers\TrialController::class,'edit'])->name('trial.edit');
+Route::post('trial/update/{id}',[\App\Http\Controllers\TrialController::class,'update'])->name('trial.update');
+Route::get('trial/delete/{id}',[\App\Http\Controllers\TrialController::class,'destroy'])->name('trial.delete');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
