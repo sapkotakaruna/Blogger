@@ -29,12 +29,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{route('trial.create')}}" class="btn btn-primary">
+                            <a href="{{route('admin.trial.create')}}" class="btn btn-primary">
                                 Add Trial
                             </a>
                         </div>
-                    </div>
-
+                    </div><br>
+                    @include('admin.common.alert')
                     <div class="row mt-4">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -72,8 +72,8 @@
                                     </span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{route('trial.edit',$row->id)}}" class="btn btn-success">Edit</a>
-                                                    <a href="{{route('trial.delete',$row->id)}}" class="btn btn-danger">Delete</a>
+                                                    <a href="{{route('admin.trial.edit',$row->id)}}" class="btn btn-success">Edit</a>
+                                                    <a href="{{route('admin.trial.delete',$row->id)}}" class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -25,7 +25,7 @@ class TrialController extends Controller
 //            dd($users);
 //        }
         $data['rows'] = Trial::select('id','name','sub_title','photo','slug','rank','status')->latest()->get();
-        return view('trial.index',compact('data'));
+        return view('admin.trial.index',compact('data'));
 
 
     }
@@ -37,7 +37,7 @@ class TrialController extends Controller
      */
     public function create()
     {
-        return view('trial.create');
+        return view('admin.trial.create');
     }
 
     /**
@@ -82,9 +82,9 @@ class TrialController extends Controller
 
         $crud = Trial::create($validated);
         if($crud){
-            return redirect()->route('trial.index')->with('success_message','Trial Added Successfully');
+            return redirect()->route('admin.trial.index')->with('success_message','Trial Added Successfully');
         }
-        return redirect()->route('trial.create')->with('error_message','Trial  Has Not Added ');
+        return redirect()->route('admin.trial.create')->with('error_message','Trial  Has Not Added ');
 
 
     }
@@ -110,7 +110,7 @@ class TrialController extends Controller
     {
         $trial = Trial::find($id);
 
-        return view('trial.edit',compact('trial'));
+        return view('admin.trial.edit',compact('trial'));
     }
 
     /**
@@ -158,9 +158,9 @@ class TrialController extends Controller
         $trial -> update($validated);
 
         if($trial){
-            return redirect()->route('trial.index')->with('success_message','Trial Update Successfully');
+            return redirect()->route('admin.trial.index')->with('success_message','Trial Update Successfully');
         }
-        return redirect()->route('trial.index')->with('error_message','Trial  Has Not Updated Now ');
+        return redirect()->route('admin.trial.index')->with('error_message','Trial  Has Not Updated Now ');
     }
 
     /**
@@ -180,9 +180,9 @@ class TrialController extends Controller
             }
             $trial->delete();
 
-            return redirect()->route('trial.index')->with('success_message', 'Trial Update Successfully');
+            return redirect()->route('admin.trial.index')->with('success_message', 'Trial Update Successfully');
         }
-            return redirect()->route('trial.index')->with('error_message','Trial  Has Not Updated Now ');
+            return redirect()->route('admin.trial.index')->with('error_message','Trial  Has Not Updated Now ');
 
         }
 }

@@ -13,7 +13,7 @@
                 <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+                <a href="#" class="d-block">{{ auth()->user()->name ?? "User Name" }}</a>
             </div>
         </div>
 
@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('crud.index') }}" class="nav-link">
+                    <a href="{{ route('admin.crud.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Crud List
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('trial.index') }}" class="nav-link">
+                    <a href="{{ route('admin.trial.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Trial List
@@ -61,6 +61,22 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Logout
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </a>
+                </li>
+
 
             </ul>
         </nav>

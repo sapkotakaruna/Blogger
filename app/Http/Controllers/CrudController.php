@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCrudValidation;
+use App\Http\Requests\UpdateCrudValidation;
 use App\Models\Crud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,7 +26,7 @@ class CrudController extends Controller
 //            dd($users);
 //        }
         $data['rows'] = Crud::select('id','title','photo','slug','rank','status')->latest()->get();
-        return view('crud.index',compact('data'));
+        return view('admin.crud.index',compact('data'));
 
 
     }
@@ -36,7 +38,7 @@ class CrudController extends Controller
      */
     public function create()
     {
-        return view('crud.create');
+        return view('admin.crud.create');
     }
 
     /**
@@ -45,16 +47,10 @@ class CrudController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCrudValidation $request)
     {
 
-        $validated= $request->validate([
-           'title'=>        ['required','max:150'],
-           'rank'=>         ['required','numeric','gt:0'],
-           'main_photo'=>   ['required','file','max:2048'],
-           'description'=>  ['required','min:10'],
-           'status'=>       ['nullable'],
-        ]);
+        $validated= $request->validated();
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['title']);
         $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
 
@@ -80,9 +76,9 @@ class CrudController extends Controller
 
         $crud = Crud::create($validated);
         if($crud){
-            return redirect()->route('crud.index')->with('success_message','Crud Added Successfully');
+            return redirect()->route('admin.crud.index')->with('success_message','Crud Added Successfully');
         }
-        return redirect()->route('crud.create')->with('error_message','Crud  Has Not Added ');
+        return redirect()->route('admin.crud.create')->with('error_message','Crud  Has Not Added ');
 
 
     }
@@ -108,7 +104,7 @@ class CrudController extends Controller
     {
         $crud = Crud::find($id);
 
-        return view('crud.edit',compact('crud'));
+        return view('admin.crud.edit',compact('crud'));
     }
 
     /**
@@ -118,15 +114,9 @@ class CrudController extends Controller
      * @param  \App\Models\Crud  $crud
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCrudValidation $request, $id)
     {
-        $validated = $request->validate([
-            'title'=>        ['required','max:150'],
-            'rank'=>         ['required','numeric','gt:0'],
-            'main_photo'=>   ['nullable','file','max:2048'],
-            'description'=>  ['required','min:10'],
-            'status'=>       ['nullable'],
-        ]);
+        $validated = $request->validated();
         $crud = Crud::find($id);
         $validated['slug'] =Str::slug($validated['title']);
         $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
@@ -157,9 +147,9 @@ class CrudController extends Controller
         $crud -> update($validated);
 
         if($crud){
-            return redirect()->route('crud.index')->with('success_message','Crud Update Successfully');
+            return redirect()->route('admin.crud.index')->with('success_message','Crud Update Successfully');
         }
-        return redirect()->route('crud.index')->with('error_message','Crud  Has Not Updated Now ');
+        return redirect()->route('admin.crud.index')->with('error_message','Crud  Has Not Updated Now ');
     }
 
     /**
@@ -179,9 +169,9 @@ class CrudController extends Controller
             }
             $crud->delete();
 
-            return redirect()->route('crud.index')->with('success_message', 'Crud Update Successfully');
+            return redirect()->route('admin.crud.index')->with('success_message', 'Crud Update Successfully');
         }
-            return redirect()->route('crud.index')->with('error_message','Crud  Has Not Updated Now ');
+            return redirect()->route('admin.crud.index')->with('error_message','Crud  Has Not Updated Now ');
 
         }
 }

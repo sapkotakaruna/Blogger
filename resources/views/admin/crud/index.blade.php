@@ -29,11 +29,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{route('crud.create')}}" class="btn btn-primary">
+                            <a href="{{route('admin.crud.create')}}" class="btn btn-primary">
                                 Add Crud
                             </a>
                         </div>
-                    </div>
+                    </div><br>
+                    @include('admin.common.alert')
 
                     <div class="row mt-4">
                         <div class="col-md-12">
@@ -70,8 +71,8 @@
                                     </span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{route('crud.edit',$row->id)}}" class="btn btn-success">Edit</a>
-                                                    <a href="{{route('crud.delete',$row->id)}}" class="btn btn-danger">Delete</a>
+                                                    <a href="{{route('admin.crud.edit',$row->id)}}" class="btn btn-success">Edit</a>
+                                                    <a href="{{route('admin.crud.delete',$row->id)}}" class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach
