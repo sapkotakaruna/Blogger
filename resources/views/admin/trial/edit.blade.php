@@ -9,13 +9,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Trial </h1>
+                        <h1 class="m-0">{{$_panel}} </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item ">Trial List</li>
-                            <li class="breadcrumb-item active">Trial Edit</li>
+                            <li class="breadcrumb-item"><a href="{{ $dashboard }}">Home</a></li>
+                            <li class="breadcrumb-item ">{{ $_panel }}} List</li>
+                            <li class="breadcrumb-item active">{{ $_panel }} Edit</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -30,8 +30,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{route('admin.trial.index')}}" class="btn btn-primary">
-                                List Trial
+                            <a href="{{route($_base_route.'.index')}}" class="btn btn-primary">
+                                List {{ $_panel }}
                             </a>
                         </div>
                     </div>
@@ -41,21 +41,21 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Edit Trial
+                                        Edit {{ $_panel }}
                                     </h3>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{route('admin.trial.update',$trial->id)}}" method="post" enctype="multipart/form-data">
+                                    <form action="{{route($_base_route.'.update',$trial->id)}}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="exampleInputEmail1" class="form-label">Name</label>
+                                            <label for="name" class="form-label">Name</label>
                                             <input type="text" class="form-control" name="name" value="{{ $trial->name }}" id="exampleInputEmail1" aria-describedby="emailHelp">
                                             @error('name')
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleInputEmail1" class="form-label">Sub Title</label>
+                                            <label for="name" class="form-label">Sub Title</label>
                                             <input type="text" class="form-control" name="sub_title" value="{{ $trial->sub_title }}" id="exampleInputEmail1" aria-describedby="emailHelp">
                                             @error('sub_title')
                                             <span class="text-danger">{{ $message }}</span>

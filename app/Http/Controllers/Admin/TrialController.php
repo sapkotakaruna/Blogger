@@ -1,15 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Trial\StoreTrialValidation;
+use App\Http\Requests\Trial\UpdateTrialValidation;
 use App\Models\Crud;
 use App\Models\Trial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Rats\Zkteco\Lib\ZKTeco;
 
-class TrialController extends Controller
+class TrialController extends BaseController
 {
+    protected $panel= 'Trial';
+    protected $view_path= 'admin.trial';
+    protected $base_route= 'admin.trial';
+    protected $folder= 'trial';
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +30,7 @@ class TrialController extends Controller
 //            dd($users);
 //        }
         $data['rows'] = Trial::select('id','name','sub_title','photo','slug','rank','status')->latest()->get();
-        return view('admin.trial.index',compact('data'));
+        return view($this->loadDataToView($this->view_path.'.index'),compact('data'));
 
 
     }
@@ -37,7 +42,7 @@ class TrialController extends Controller
      */
     public function create()
     {
-        return view('admin.trial.create');
+        return view($this->loadDataToView($this->view_path.'.create'));
     }
 
     /**
@@ -46,17 +51,10 @@ class TrialController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTrialValidation $request)
     {
 
-        $validated= $request->validate([
-           'name'          =>['required','max:150'],
-           'sub_title'      =>[ 'nullable'],
-           'rank'           =>['required','numeric','gt:0'],
-           'main_photo'     =>['required','file','max:2048'],
-           'description'    =>['required','min:10'],
-           'status'         =>['nullable'],
-        ]);
+        $validated= $request->validated();
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
         $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
 
@@ -80,11 +78,15 @@ class TrialController extends Controller
 
 
 
-        $crud = Trial::create($validated);
-        if($crud){
-            return redirect()->route('admin.trial.index')->with('success_message','Trial Added Successfully');
-        }
-        return redirect()->route('admin.trial.create')->with('error_message','Trial  Has Not Added ');
+        $trial = Trial::create($validated);
+
+        $request->session()->flash($trial?'success_message':'error_message', $this->panel.' '.$request->title. ' added Successfully');
+
+        return redirect()->route($this->base_route.'.index');
+//        if($crud){
+//            return redirect()->route('admin.trial.index')->with('success_message','Trial Added Successfully');
+//        }
+//        return redirect()->route('admin.trial.create')->with('error_message','Trial  Has Not Added ');
 
 
     }
@@ -95,7 +97,7 @@ class TrialController extends Controller
      * @param  \App\Models\Crud  $crud
      * @return \Illuminate\Http\Response
      */
-    public function show(Crud $crud)
+    public function show(Trial $trial)
     {
         //
     }
@@ -109,8 +111,9 @@ class TrialController extends Controller
     public function edit(Request $request,$id )
     {
         $trial = Trial::find($id);
+        $this->resourceExist($trial);
 
-        return view('admin.trial.edit',compact('trial'));
+        return view($this->loadDataToView($this->view_path.'.edit'),compact('trial'));
     }
 
     /**
@@ -120,25 +123,21 @@ class TrialController extends Controller
      * @param  \App\Models\Crud  $crud
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTrialValidation $request, $id)
     {
-        $validated = $request->validate([
-            'name'=>        ['required','max:150'],
-            'sub_title'      =>[ 'nullable'],
-            'rank'=>         ['required','numeric','gt:0'],
-            'main_photo'=>   ['nullable','file','max:2048'],
-            'description'=>  ['required','min:10'],
-            'status'=>       ['nullable'],
-        ]);
+        $validated = $request->validated();
         $trial = Trial::find($id);
+        $this->resourceExist($trial);
+
         $validated['slug'] =Str::slug($validated['name']);
         $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
         //upload file
         if($request->hasFile('main_photo')){
             $file = $validated['main_photo'];
+//            dd($file);
 
             //public path to image
-            $path =public_path('images/crud');
+            $path =public_path('images/trial');
              $file_name = $validated['slug']. '.' .$file->getclientOriginalExtension();
 
             //check and create folder image
@@ -157,10 +156,14 @@ class TrialController extends Controller
 
         $trial -> update($validated);
 
-        if($trial){
-            return redirect()->route('admin.trial.index')->with('success_message','Trial Update Successfully');
-        }
-        return redirect()->route('admin.trial.index')->with('error_message','Trial  Has Not Updated Now ');
+        $request->session()->flash($trial?'success_message':'error_message', $this->panel.' '.$request->title. ' added Successfully');
+
+        return redirect()->route($this->base_route.'.index');
+
+//        if($trial){
+//            return redirect()->route('admin.trial.index')->with('success_message','Trial Update Successfully');
+//        }
+//        return redirect()->route('admin.trial.index')->with('error_message','Trial  Has Not Updated Now ');
     }
 
     /**
@@ -172,17 +175,17 @@ class TrialController extends Controller
     public function destroy(Request $request, $id)
     {
         $trial = Trial::find($id);
+        $this->resourceExist($trial);
 
-        if($trial) {
+
+        if ($trial) {
             //remove old photo
             if (file_exists(public_path('images/trial/' . $trial->photo))) {
                 @unlink(public_path('images/trial/' . $trial->photo));
             }
             $trial->delete();
 
-            return redirect()->route('admin.trial.index')->with('success_message', 'Trial Update Successfully');
+            return redirect()->route($this->base_route . '.index')->with('success_message', $this->panel . ' deleted Successfully');
         }
-            return redirect()->route('admin.trial.index')->with('error_message','Trial  Has Not Updated Now ');
-
         }
-}
+    }

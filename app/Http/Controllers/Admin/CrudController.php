@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StoreCrudValidation;
 use App\Http\Requests\UpdateCrudValidation;
 use App\Models\Crud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Rats\Zkteco\Lib\ZKTeco;
 
-class CrudController extends Controller
+class CrudController extends BaseController
 {
+    protected $panel= 'Crud';
+    protected $view_path= 'admin.crud';
+    protected $base_route= 'admin.crud';
+    protected $folder= 'crud';
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +29,7 @@ class CrudController extends Controller
 //            dd($users);
 //        }
         $data['rows'] = Crud::select('id','title','photo','slug','rank','status')->latest()->get();
-        return view('admin.crud.index',compact('data'));
+        return view($this->loadDataToView($this->view_path.'.index'),compact('data'));
 
 
     }
@@ -38,7 +41,7 @@ class CrudController extends Controller
      */
     public function create()
     {
-        return view('admin.crud.create');
+        return view($this->loadDataToView($this->view_path.'.create'));
     }
 
     /**
@@ -75,11 +78,17 @@ class CrudController extends Controller
 
 
         $crud = Crud::create($validated);
-        if($crud){
-            return redirect()->route('admin.crud.index')->with('success_message','Crud Added Successfully');
-        }
-        return redirect()->route('admin.crud.create')->with('error_message','Crud  Has Not Added ');
 
+        $request->session()->flash($crud?'success_message':'error_message', $this->panel.' '.$request->name. ' added Successfully');
+
+        return redirect()->route($this->base_route.'.index');
+
+
+//        if($crud){
+//            return redirect()->route($this->base_route.'.index')->with('success_message','Crud Added Successfully');
+//        }
+//        return redirect()->route($this->base_route.'.create')->with('error_message','Crud  Has Not Added ');
+//
 
     }
 
@@ -103,8 +112,10 @@ class CrudController extends Controller
     public function edit(Request $request,$id )
     {
         $crud = Crud::find($id);
+        $this->resourceExist($crud);
 
-        return view('admin.crud.edit',compact('crud'));
+
+        return view($this->loadDataToView($this->view_path.'.edit'),compact('crud'));
     }
 
     /**
@@ -118,6 +129,8 @@ class CrudController extends Controller
     {
         $validated = $request->validated();
         $crud = Crud::find($id);
+        $this->resourceExist($crud);
+
         $validated['slug'] =Str::slug($validated['title']);
         $validated['status']=isset($request['status']) && $request['status'] == "on" ? 1:0 ;
         //upload file
@@ -147,9 +160,9 @@ class CrudController extends Controller
         $crud -> update($validated);
 
         if($crud){
-            return redirect()->route('admin.crud.index')->with('success_message','Crud Update Successfully');
+            return redirect()->route($this->base_route.'.index')->with('success_message','Crud Update Successfully');
         }
-        return redirect()->route('admin.crud.index')->with('error_message','Crud  Has Not Updated Now ');
+        return redirect()->route($this->base_route.'.index')->with('error_message','Crud  Has Not Updated Now ');
     }
 
     /**
@@ -161,6 +174,8 @@ class CrudController extends Controller
     public function destroy(Request $request, $id)
     {
         $crud = Crud::find($id);
+        $this->resourceExist($crud);
+
 
         if($crud) {
             //remove old photo
@@ -169,9 +184,9 @@ class CrudController extends Controller
             }
             $crud->delete();
 
-            return redirect()->route('admin.crud.index')->with('success_message', 'Crud Update Successfully');
+            return redirect()->route($this->base_route.'.index')->with('success_message', 'Crud Update Successfully');
         }
-            return redirect()->route('admin.crud.index')->with('error_message','Crud  Has Not Updated Now ');
+            return redirect()->route($this->base_route.'.index')->with('error_message','Crud  Has Not Updated Now ');
 
         }
 }

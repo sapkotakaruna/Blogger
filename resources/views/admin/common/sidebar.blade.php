@@ -47,8 +47,17 @@
                     <a href="{{ route('admin.crud.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Crud List
+                            Crud
 {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.user.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            User
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
                         </p>
                     </a>
                 </li>
@@ -56,7 +65,61 @@
                     <a href="{{ route('admin.trial.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Trial List
+                            Trail
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.aboutUs.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-info"></i>
+                        <p>
+                            AboutUs
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.skill.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-info"></i>
+                        <p>
+                            Skill
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.services.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-server"></i>
+                        <p>
+                            Services
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.work.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-file-word"></i>
+                        <p>
+                            Work
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.blog.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-blog"></i>
+                        <p>
+                            Blog
+                            {{--                            <span class="right badge badge-danger">New</span>--}}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.contact.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-address-book"></i>
+                        <p>
+                            Contact
                             {{--                            <span class="right badge badge-danger">New</span>--}}
                         </p>
                     </a>

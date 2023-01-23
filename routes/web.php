@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\CrudController;
+use App\Http\Controllers\Front\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,26 +14,35 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/',[HomeController::class,'index'])->name('home.index');
+Route::post('/contact',[HomeController::class,'contactStore'])->name('contact.store');
+Route::get('/blog/{slug}',[HomeController::class,'blog'])->name('blog');
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::group(['prefix' => 'admin/', 'as' => 'admin.', 'middleware' => ['auth']], function (){
-    Route::get('crud',[\App\Http\Controllers\CrudController::class,'index'])->name('crud.index');
-    Route::get('crud/create',[\App\Http\Controllers\CrudController::class,'create'])->name('crud.create');
-    Route::post('crud/store',[\App\Http\Controllers\CrudController::class,'store'])->name('crud.store');
-    Route::get('crud/edit/{id}',[\App\Http\Controllers\CrudController::class,'edit'])->name('crud.edit');
-    Route::post('crud/update/{id}',[\App\Http\Controllers\CrudController::class,'update'])->name('crud.update');
-    Route::get('crud/delete/{id}',[\App\Http\Controllers\CrudController::class,'destroy'])->name('crud.delete');
+    Route::get('crud',[CrudController::class,'index'])->name('crud.index');
+    Route::get('crud/create',[CrudController::class,'create'])->name('crud.create');
+    Route::post('crud/store',[CrudController::class,'store'])->name('crud.store');
+    Route::get('crud/edit/{id}',[CrudController::class,'edit'])->name('crud.edit');
+    Route::post('crud/update/{id}',[CrudController::class,'update'])->name('crud.update');
+    Route::get('crud/delete/{id}',[CrudController::class,'destroy'])->name('crud.delete');
 
-    Route::get('trial',[\App\Http\Controllers\TrialController::class,'index'])->name('trial.index');
-    Route::get('trial/create',[\App\Http\Controllers\TrialController::class,'create'])->name('trial.create');
-    Route::post('trial/store',[\App\Http\Controllers\TrialController::class,'store'])->name('trial.store');
-    Route::get('trial/edit/{id}',[\App\Http\Controllers\TrialController::class,'edit'])->name('trial.edit');
-    Route::post('trial/update/{id}',[\App\Http\Controllers\TrialController::class,'update'])->name('trial.update');
-    Route::get('trial/delete/{id}',[\App\Http\Controllers\TrialController::class,'destroy'])->name('trial.delete');
+    Route::get('trial',[\App\Http\Controllers\Admin\TrialController::class,'index'])->name('trial.index');
+    Route::get('trial/create',[\App\Http\Controllers\Admin\TrialController::class,'create'])->name('trial.create');
+    Route::post('trial/store',[\App\Http\Controllers\Admin\TrialController::class,'store'])->name('trial.store');
+    Route::get('trial/edit/{id}',[\App\Http\Controllers\Admin\TrialController::class,'edit'])->name('trial.edit');
+    Route::post('trial/update/{id}',[\App\Http\Controllers\Admin\TrialController::class,'update'])->name('trial.update');
+    Route::get('trial/delete/{id}',[\App\Http\Controllers\Admin\TrialController::class,'destroy'])->name('trial.delete');
+
+    Route::resource('aboutUs',\App\Http\Controllers\Admin\AboutUsController::class);
+    Route::resource('services',\App\Http\Controllers\Admin\ServicesController::class);
+    Route::resource('work',\App\Http\Controllers\Admin\WorkController::class);
+    Route::resource('blog',\App\Http\Controllers\Admin\BlogController::class);
+    Route::resource('contact',\App\Http\Controllers\Admin\ContactController::class);
+    Route::resource('skill',\App\Http\Controllers\Admin\SkillController::class);
+    Route::resource('user',\App\Http\Controllers\Admin\UserController::class);
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+

@@ -9,13 +9,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Trial </h1>
+                        <h1 class="m-0">{{ $_panel }} </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item ">Trial List</li>
-                            <li class="breadcrumb-item active">Trial Create</li>
+                            <li class="breadcrumb-item"><a href="{{ $dashboard }}">Home</a></li>
+                            <li class="breadcrumb-item ">{{ $_panel }} List</li>
+                            <li class="breadcrumb-item active">{{ $_panel }} Create</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -30,8 +30,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{route('admin.trial.index')}}" class="btn btn-primary">
-                                List Trial
+                            <a href="{{route($_base_route.'.index')}}" class="btn btn-primary">
+                                List {{ $_panel }}
                             </a>
                         </div>
                     </div>
@@ -41,11 +41,11 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Create Trial
+                                        Create {{ $_panel }}
                                     </h3>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{route('admin.trial.store')}}" method="post" enctype="multipart/form-data">
+                                    <form action="{{route($_base_route.'.store')}}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="exampleInputEmail1" class="form-label">Name</label>
@@ -113,18 +113,4 @@
 
 
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blogger</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-</head>
-<body>
-<h1>TRIAL CREATE</h1>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-</body>
-</html>
